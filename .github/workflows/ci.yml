@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: fiscal
+          POSTGRES_PASSWORD: fiscal
+          POSTGRES_DB: fiscal
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U fiscal" \
+          --health-interval 10s \
+          --health-timeout 5s \
+          --health-retries 5
+    env:
+      POSTGRES_DB: fiscal
+      POSTGRES_USER: fiscal
+      POSTGRES_PASSWORD: fiscal
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      SECRET_KEY: dummy
+      DEBUG: 0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Wait for Postgres
+        run: |
+          for i in {1..20}; do
+            pg_isready -h localhost -p 5432 -d fiscal -U fiscal && echo "Postgres OK" && break;
+            echo "Aguardando Postgres..."; sleep 2;
+          done
+      - name: Migrate
+        run: python manage.py migrate --noinput
+      - name: Tests
+        run: pytest -q

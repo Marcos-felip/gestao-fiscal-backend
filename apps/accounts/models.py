@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+import secrets
 
 
 class BaseModel(models.Model):
@@ -18,11 +19,17 @@ class Organization(models.Model):
     """Organização agrupando empresas e usuários."""
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
+    key = models.CharField(max_length=50, verbose_name=u'hash id', null=True, blank=True, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = secrets.token_urlsafe(32)[:50]
+        super().save(*args, **kwargs)
 
 
 class User(AbstractUser):

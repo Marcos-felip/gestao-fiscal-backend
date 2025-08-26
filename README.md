@@ -1,7 +1,6 @@
 # Gestão Fiscal Backend
 
 ## Stack
-## Stack
 
 - ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)  Python 3.12
 - ![Django](https://img.shields.io/badge/Django-5-green?logo=django&logoColor=white)  Django 5 + DRF
@@ -17,14 +16,13 @@ cd gestao-fiscal-backend
 
 ## 2. Variáveis de ambiente
 
-Copie o arquivo de exemplo e ajuste valores sensíveis (senhas, SECRET_KEY):
+Copie o arquivo de exemplo e ajuste valores sensíveis:
 
 ```bash
 cp .env.example .env
 ```
 
 Principais variáveis (arquivo `.env`):
-- SECRET_KEY (trocar em produção)
 - POSTGRES_DB / POSTGRES_USER / POSTGRES_PASSWORD
 - DEBUG=1 para desenvolvimento
 
@@ -50,7 +48,7 @@ Pré‑requisitos: Python 3.12 + Postgres local.
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env  # ajustar variáveis
+cp .env.example .env
 python manage.py migrate
 python manage.py runserver
 ```

@@ -41,7 +41,7 @@ class EstablishmentAdmin(admin.ModelAdmin):
 		'company',
 		'is_matrix',
 		'environment_default',
-		'active'
+		'is_active'
 	)
 	search_fields = (
 		'cnpj',

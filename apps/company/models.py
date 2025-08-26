@@ -69,7 +69,7 @@ class Establishment(models.Model):
     address = models.ForeignKey(Address, on_delete=models.PROTECT, related_name='establishments', verbose_name='Endereço')
     is_matrix = models.BooleanField(default=False)
     environment_default = models.CharField(max_length=20, choices=Environment.choices, default=Environment.PRODUCTION, verbose_name='Ambiente Padrão')
-    active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

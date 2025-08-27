@@ -2,7 +2,7 @@ from apps.accounts.models import Membership, Organization
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 
 
@@ -46,7 +46,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         ## usa validadores configurados em AUTH_PASSWORD_VALIDATORS
         try:
             validate_password(password, user=None)
-        except DjangoValidationError as e:
+        except ValidationError as e:
             raise serializers.ValidationError({"password": list(e.messages)})
 
         org_slug = slugify(attrs.get('organization_slug'))
@@ -67,7 +67,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         ## cria usuário
         password = validated_data.pop('password')
         email = validated_data.pop('email')
-        user = User.objects.create_user(email=email, password=password, **validated_data)
+        username = email
+        user = User.objects.create_user(username=username, email=email, password=password, **validated_data)
 
         ## cria organização e membership
         if org_name and org_slug:

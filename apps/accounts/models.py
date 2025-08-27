@@ -19,6 +19,7 @@ class Organization(models.Model):
     """Organização agrupando empresas e usuários."""
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True, blank=True, null=True)
     key = models.CharField(max_length=50, verbose_name=u'hash id', null=True, blank=True, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,6 +37,7 @@ class User(AbstractUser):
     """Usuário customizado para permitir relacionamentos de membership multi-org."""
     email = models.EmailField(unique=True)
     username = models.CharField(blank=True, null=True,max_length=100)
+    key = models.CharField(max_length=50, verbose_name=u'hash id', null=True, blank=True, db_index=True)
     org_active = models.ForeignKey(Organization, verbose_name='organização ativa', blank=True, null=True, on_delete=models.CASCADE, related_name="organization")
     org_list = models.ManyToManyField(Organization, verbose_name='organizações', blank=True, through='Membership')
     email_confirmed = models.BooleanField(default=False)
@@ -46,6 +48,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = secrets.token_urlsafe(32)[:50]
+        super().save(*args, **kwargs)
 
 class Membership(models.Model):
     """Associação de usuário a organização, com permissões."""

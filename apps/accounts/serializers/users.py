@@ -85,3 +85,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
+
+
+class CreateMembershipSerializer(serializers.ModelSerializer):
+    """Serializer para criar associações de usuário a organizações."""
+
+    class Meta:
+        model = Membership
+        fields = [
+            'user',
+            'organization',
+            'role'
+        ]

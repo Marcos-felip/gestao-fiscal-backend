@@ -88,7 +88,7 @@ class Establishment(models.Model):
         return f"{self.cnpj} ({'Matriz' if self.is_matrix else 'Filial'})"
 
 
-class Product(BaseModel):
+class Product(models.Model):
     """Produto cadastrado (catálogo) utilizado em operações de compra e venda."""
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='products', verbose_name='Empresa')
@@ -102,6 +102,9 @@ class Product(BaseModel):
     sale_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Preço de Venda')
     cest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Alíquota CEST')
     origin = models.IntegerField(default=0, help_text='Origem (0 a 8)', verbose_name='Origem Mercadoria')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Produto'

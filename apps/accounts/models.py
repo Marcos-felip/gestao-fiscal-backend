@@ -17,9 +17,14 @@ class BaseModel(models.Model):
 
 class Organization(models.Model):
     """Organização agrupando empresas e usuários."""
+    class OrganizationType(models.TextChoices):
+        GROUP = 'group', 'Group'
+        COMPANY = 'company', 'Company'
+
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True, blank=True, null=True)
+    organization_type = models.CharField(max_length=20, choices=OrganizationType.choices , default=OrganizationType.COMPANY)
     key = models.CharField(max_length=50, verbose_name=u'hash id', null=True, blank=True, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

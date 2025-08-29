@@ -18,8 +18,8 @@ class BaseModel(models.Model):
 class Organization(models.Model):
     """Organização agrupando empresas e usuários."""
     class OrganizationType(models.TextChoices):
-        GROUP = 'group', 'Group'
-        COMPANY = 'company', 'Company'
+        GROUP = 'group', 'Grupos'
+        COMPANY = 'company', 'Empresas'
 
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -63,10 +63,10 @@ class User(AbstractUser):
 class Membership(models.Model):
     """Associação de usuário a organização, com permissões."""
     class Role(models.TextChoices):
-        OWNER = 'owner', 'Owner'
-        ADMIN = 'admin', 'Admin'
-        MEMBER = 'member', 'Member'
-        READONLY = 'readonly', 'Read Only'
+        OWNER = 'owner', 'Dono'
+        ADMIN = 'admin', 'Administrador'
+        MEMBER = 'member', 'Membro'
+        READONLY = 'readonly', 'Somente Leitura'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memberships')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='memberships')

@@ -24,6 +24,7 @@ class Organization(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True, blank=True, null=True)
+    phone = models.CharField(max_length=15, verbose_name=u'Telefone', null=True, blank=True)
     organization_type = models.CharField(max_length=20, choices=OrganizationType.choices , default=OrganizationType.COMPANY)
     key = models.CharField(max_length=50, verbose_name=u'hash id', null=True, blank=True, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)

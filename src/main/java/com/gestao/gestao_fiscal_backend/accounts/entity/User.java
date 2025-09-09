@@ -25,35 +25,35 @@ public class User {
   private String password;
 
   @ManyToOne
-  @JoinColumn(name = "company_id")
-  private Company company_active;
+  @JoinColumn(name = "companyId")
+  private Company companyActive;
 
   @Size(max = 50)
-  @Column(name = "first_name", length = 50)
+  @Column(name = "firstName", length = 50)
   private String firstName;
 
   @Size(max = 50)
-  @Column(name = "last_name", length = 50)
+  @Column(name = "lastName", length = 50)
   private String lastName;
 
-  @Column(name = "first_access")
+  @Column(name = "firstAccess")
   private Boolean firstAccess;
 
-  @Column(name = "last_login")
+  @Column(name = "lastLogin")
   private LocalDateTime lastLogin;
 
-  @Column(name = "created_at")
+  @Column(name = "createdAt")
   private LocalDateTime createdAt;
 
-  @Column(name = "updated_at")
+  @Column(name = "updatedAt")
   private LocalDateTime updatedAt;
 
-  public Company getCompany_active() {
-    return company_active;
+  public Company getCompanyActive() {
+    return companyActive;
   }
 
-  public void setCompany_active(Company company_active) {
-    this.company_active = company_active;
+  public void setCompanyActive(Company companyActive) {
+    this.companyActive = companyActive;
   }
 
 }
